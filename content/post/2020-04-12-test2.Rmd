@@ -1,0 +1,12 @@
+---
+title: Ciao Ali
+author: VE
+date: '2020-04-12'
+slug: test2
+categories: []
+tags: []
+---
+
+![](/post/2020-04-12-test2_files/a050.jpg)
+
+
