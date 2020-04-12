@@ -1,4 +1,4 @@
-baseURL = "http://example.com/"
+baseURL = "https://venciso.netlify.com/"
 languageCode = "en-us"
 title = "Minimal"
 theme = "minimal"
