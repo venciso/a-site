@@ -53,7 +53,7 @@
       <pubDate>Sun, 12 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/test2/</guid>
-      <description></description>
+      <description>library(plotly)## Warning: package &amp;#39;plotly&amp;#39; was built under R version 3.5.3## Loading required package: ggplot2## Warning: package &amp;#39;ggplot2&amp;#39; was built under R version 3.</description>
     </item>
     
     <item>

@@ -7,6 +7,98 @@ categories: []
 tags: []
 ---
 
-![](/post/2020-04-12-test2_files/a050.jpg)
+```{r}
+library(plotly)
+library(MASS)
+
+covmat <- matrix(c(0.8, 0.4, 0.3, 0.8), nrow = 2, byrow = T)
+df <- mvrnorm(n = 10000, c(0,0), Sigma = covmat)
+df <- as.data.frame(df)
+
+colnames(df) <- c("x", "y")
+fig <- plot_ly(df, x = ~x, y = ~y, alpha = 0.3)
+fig <- fig %>% add_markers(marker = list(line = list(color = "black", width = 1)))
+fig <- fig %>% layout(
+  title = "Drop down menus - Plot type",
+  xaxis = list(domain = c(0.1, 1)),
+  yaxis = list(title = "y"),
+  updatemenus = list(
+    list(
+      y = 0.8,
+      buttons = list(
+        
+        list(method = "restyle",
+             args = list("type", "scatter"),
+             label = "Scatter"),
+        
+        list(method = "restyle",
+             args = list("type", "histogram2d"),
+             label = "2D Histogram")))
+  ))
+
+fig
+
+```
+
+```{r}
+library(tidyverse)
+library(timetk)
+library(kableExtra)
+library(highcharter)
+require(quantmod)
+```
+
+```{r}
+symbols <- 
+  c("SPY","EFA", "IJS", "EEM","AGG")
+
+prices <- 
+  getSymbols(symbols, 
+             src = 'yahoo', 
+             from = "2013-01-01",
+             to = "2017-12-31",
+             auto.assign = TRUE, 
+             warnings = FALSE) %>% 
+  map(~Ad(get(.))) %>%
+  reduce(merge) %>% 
+  `colnames<-`(symbols)
+
+prices_monthly <- 
+  to.monthly(prices, 
+             indexAt = "last", 
+             OHLC = FALSE)
+
+
+  
+
+asset_returns_long <-  
+  prices %>% 
+  to.monthly(indexAt = "last", 
+             OHLC = FALSE) %>% 
+  tk_tbl(preserve_index = TRUE, 
+         rename_index = "date") %>%
+  gather(asset, returns, -date) %>% 
+  group_by(asset) %>%  
+  mutate(returns = 
+           (log(returns) - log(lag(returns))) *100
+         ) %>% 
+  na.omit()
+```
+
+```{r}
+asset_returns_long %>% 
+  hchart(., 
+         type = "line", 
+         hcaes(x = date, 
+               y = returns, 
+               group = asset)) %>% 
+  hc_yAxis(opposite = TRUE,
+           labels = list(format = "{value}%")) %>% 
+  hc_tooltip(pointFormat = '{point.x:%Y-%m-%d}
+                             
+
+                             {point.y: .4f}%')
+```
+
 
 
