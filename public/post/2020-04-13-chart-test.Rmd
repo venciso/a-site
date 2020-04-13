@@ -43,3 +43,12 @@ tsdd %>%
                              {point.y: .4f}%')
 ```
 
+```{r, echo=FALSE, warning=FALSE}
+p<-ggplot(tsdd[variable>"2020-03-25"],aes(x=variable, y=value, group=`Country/Region`, colour=`Country/Region`)) + geom_line() + geom_point()
+
+```
+
+```{r}
+ggplotly(p)
+```
+
