@@ -34,7 +34,7 @@ cov
 p<-ggplot(cov[cumDeaths>500 & country!="China"],aes(x=dateRep,y=log(deaths), colour=country, group=country)) + geom_line() + geom_point() + theme_bw()
 ```
 
-```{r}
+```{r,echo=FALSE}
 ggplotly(p)
 ```
 
