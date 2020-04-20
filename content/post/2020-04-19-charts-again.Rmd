@@ -58,7 +58,7 @@ fp[,index:=seq(1,.N),country]
 ```
 
 ```{r, echo=FALSE, warning=FALSE}
-p<-ggplot(fp,aes(x=index, y=log(cumDeaths), group=country, colour=country)) + geom_line() + geom_point()
+p<-ggplot(fp,aes(x=index, y=log(cumDeaths), group=country, colour=country)) + geom_line() + geom_point() + theme_bw()
 ```
 
 ```{r, echo=FALSE}
