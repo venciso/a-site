@@ -1,21 +1,21 @@
 baseURL = "https://venciso.netlify.com/"
 languageCode = "en-us"
-title = "Minimal"
+title = "A site"
 theme = "minimal"
 disqusShortname = "username" # delete this to disable disqus comments
 googleAnalytics = ""
 
 [params]
-    author = "Calin Tataru"
-    description = "Personal blog theme powered by Hugo"
+    author = "Victor Enciso"
+    description = "A site"
     githubUsername = "#"
-    accent = "red"
+    accent = "green"
     showBorder = true
     backgroundColor = "white"
     font = "Raleway" # should match the name on Google Fonts!
     highlight = true
     highlightStyle = "default"
-    highlightLanguages = ["go", "haskell", "kotlin", "scala", "swift"]
+    highlightLanguages = ["r","go", "haskell", "kotlin", "scala", "swift"]
 
 [[menu.main]]
     url = "/"
@@ -42,7 +42,7 @@ googleAnalytics = ""
 # The list of available icons can be found at http://fontawesome.io/icons.
 
 [[menu.icon]]
-    url = "mailto:me@example.com"
+    url = "vmenciso@gmail.com"
     name = "envelope-o"
     weight = 1
 
@@ -61,7 +61,4 @@ googleAnalytics = ""
     name = "linkedin"
     weight = 4
 
-[[menu.icon]]
-    url = "https://www.stackoverflow.com/username/"
-    name = "stack-overflow"
-    weight = 5
+
