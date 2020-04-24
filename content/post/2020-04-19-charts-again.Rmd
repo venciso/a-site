@@ -35,7 +35,7 @@ p<-ggplot(cov[cumDeaths>500 & country!="China"],aes(x=dateRep,y=log(deaths), col
 ```
 
 ```{r,echo=FALSE}
-ggplotly(p)
+ggplotly(p,width = 600,height= 1000)
 ```
 
 
