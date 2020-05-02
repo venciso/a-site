@@ -7,11 +7,12 @@ categories:
   - Tennis
   - R
 tags:
+  - R
+  - tennis
   - leaflet
-  - reticulate
   - sentiment analysis
   - twitter
-  - python
+  - wordcloud
 ---
 
 First, let's load the required packages and the tweet data that I had previously saved.
