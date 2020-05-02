@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>reticulate on Placeholder for an awesome title</title>
+    <link>/tags/reticulate/</link>
+    <description>Recent content in reticulate on Placeholder for an awesome title</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 01 May 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/reticulate/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Analysing  tweets from the Virtual Madrid Open</title>
+      <link>/post/analysing-tweets-from-the-virtual-madrid-open/</link>
+      <pubDate>Fri, 01 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/analysing-tweets-from-the-virtual-madrid-open/</guid>
+      <description>First, let’s load the required packages and the tweet data that I had previously saved.
+require(data.table)require(ggplot2)require(dplyr)require(reticulate)require(sentimentr)require(rtweet)require(leaflet)require(lubridate)require(tidytext)require(wordcloud)tb&amp;lt;-import(&amp;quot;textblob&amp;quot;)tw&amp;lt;-fread(&amp;quot;C:/Users/victor.enciso/Documents_notOneDrive/Projects/misc/MMOPEN_tweets_01052020_1030.csv&amp;quot;)#Make sure accents and other charcters display correctlyEncoding(tw$location)&amp;lt;-&amp;quot;UTF-8&amp;quot;Encoding(tw$text)&amp;lt;-&amp;quot;UTF-8&amp;quot;The query retrieved ~7500 tweets from the last 9 days which is enough to cover the duration of the tournament
+Using leaflet we can plot the location of the tweets to get an idea of where they are coming from.</description>
+    </item>
+    
+  </channel>
+</rss>

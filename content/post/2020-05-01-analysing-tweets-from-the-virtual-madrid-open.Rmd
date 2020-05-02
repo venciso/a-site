@@ -1,0 +1,152 @@
+---
+title: Analysing  tweets from the Virtual Madrid Open
+author: ''
+date: '2020-05-01'
+slug: analysing-tweets-from-the-virtual-madrid-open
+categories:
+  - Tennis
+  - R
+tags:
+  - R
+  - tennis
+  - leaflet
+  - sentiment analysis
+  - twitter
+  - wordcloud
+---
+
+First, let's load the required packages and the tweet data that I had previously saved.
+
+```{r, message=F, warning=F}
+require(data.table)
+require(ggplot2)
+require(dplyr)
+require(reticulate)
+require(sentimentr)
+require(rtweet)
+require(leaflet)
+require(lubridate)
+require(tidytext)
+require(wordcloud)
+tb<-import("textblob")
+
+tw<-fread("C:/Users/victor.enciso/Documents_notOneDrive/Projects/misc/MMOPEN_tweets_01052020_1030.csv")
+#Make sure accents and other charcters display correctly
+Encoding(tw$location)<-"UTF-8"
+Encoding(tw$text)<-"UTF-8"
+```
+
+The query retrieved ~7500 tweets from the last 9 days which is enough to cover the duration of the tournament
+
+Using leaflet we can plot the location of the tweets to get an idea of where they are coming from. 
+We use lat,long coordinates where available. Unfortunately only a very small proportion of tweets come with location information.
+
+```{r}
+m <- leaflet() %>%
+     addTiles() %>%  # Add default OpenStreetMap map tiles
+    #addProviderTiles('Stamen.Toner') %>% 
+     addMarkers(lat=tw[!is.na(lat),lat], lng=tw[!is.na(lng),lng],
+                     popup=paste0(tw[!is.na(lng),screen_name],":",tw[!is.na(lng),text])) 
+m  
+```
+
+Even with the small proportion of tweets we can get an idea of where the audience for the tournament is. 
+Let's see how many languages are represented in the data set. 
+
+
+```{r}
+ggplot(tw[,.N,lang][N>50], aes(x=lang,y=N)) + geom_bar(stat="Identity") + theme_bw()
+```
+
+As expected English is the most represented language followed by Spanish. Not a big surprise since the tournament took place there. 
+
+We want to assess the overall sentiment for the tournament from the tweets. We can do this by using the sentimentr package. 
+Let's look at an example first.
+
+```{r}
+exampleText<-tw[lang=="en",text][129]
+exampleText
+```
+
+```{r}
+sentiment_by(exampleText)
+```
+
+First, let's translate the tweets for the most prevalent languages. 
+I will do Spanish, Japanese, French and Italian
+
+```{r}
+spanish<-tb$TextBlob(tw[lang=="es",][,paste0(text,collapse = " 12345 ")])
+trans.spanish<-spanish$translate(from_lang = "es", to="en")
+#(trans=unlist(strsplit(as.character(trans.spanish)," 12345 ")))
+```
+
+
+
+The following code chunk calculates the sentiment for each tweet and appends the results back to the table.
+
+```{r}
+twen <- tw[lang=="en"]
+sent <- sentiment_by(get_sentences(twen[,(text)]))
+```
+
+How is the sentiment distributed?
+
+```{r}
+ggplot(sent,aes(ave_sentiment)) + geom_histogram(bins=50) + theme_bw()
+```
+
+There is a big peak at 0 which represents neutral tweets. The distributions to either side of 0 show that sentiment is more positive than negative. 
+
+Let's remove the neutral-sentiment tweets and plot the histogram again this time looking at the evolution per day.
+
+```{r}
+twen<-bind_cols(twen,sent)
+twen[,sent_dir:=ifelse(ave_sentiment<0,"Negative",ifelse(ave_sentiment>0,"Positive","Neutral"))]
+ggplot(twen[ave_sentiment!=0],aes(ave_sentiment, fill=sent_dir)) + geom_histogram(bins=50) + facet_wrap(.~date(created_at)) + theme_bw()
+```
+
+We can extract the terms that contributed to the classification of the tweets.
+
+```{r,message=F,warning=F}
+terms<-extract_sentiment_terms((twen[,text]))
+```
+
+Extracted positive sentiment terms
+
+```{r, warning=FALSE,message=FALSE}
+my_sw<-c(stop_words$word,"virtual","pro","play","game","tennis","players","madrid","match","video","games","player","players","tournament")
+
+u<-data.table(words=unlist(terms[,positive]))[,.N,words][order(-N)]
+u<-u[!words %in% my_sw]
+wordcloud(words = u$words, freq = u$N, min.freq = 1,max.words=200, random.order=FALSE, rot.per=0.35,colors=brewer.pal(8, "Dark2"))
+```
+
+Extracted negative sentiment terms
+
+```{r, warning=FALSE,message=FALSE}
+u<-data.table(words=unlist(terms[,negative]))[,.N,words][order(-N)]
+u<-u[!words %in% my_sw]
+wordcloud(words = u$words, freq = u$N, min.freq = 1,max.words=200, random.order=FALSE, rot.per=0.35,colors=brewer.pal(8, "Dark2"))
+```
+Quick cleaning of the text data
+```{r}
+twen[,text2 := gsub("https\\S*", "", text)]
+twen[,text2 := gsub("@\\S*", "", text2) ]
+twen[,text2 := gsub("#\\S*", "", text2) ]
+twen[,text2 := gsub("amp", "", text2) ]
+twen[,text2 := gsub("[\r\n]", "", text2)]
+twen[,text2 := gsub("[[:punct:]]", "", text2)]
+```
+
+```{r,message=FALSE}
+u<-unnest_tokens(twen[ave_sentiment>0,.(text2)],words,text2)[,.N,words][order(-N)]
+u<-u[!words %in% my_sw]
+wordcloud(words = u$words, freq = u$N, min.freq = 5,max.words=200, random.order=FALSE, rot.per=0.35,colors=brewer.pal(8, "Dark2"),scale = c(1.5,0.5))
+```
+
+```{r,message=FALSE}
+u<-unnest_tokens(twen[ave_sentiment<0,.(text2)],words,text2)[,.N,words][order(-N)]
+u<-u[!words %in% my_sw]
+wordcloud(words = u$words, freq = u$N, min.freq = 5,max.words=200, random.order=FALSE, rot.per=0.35,colors=brewer.pal(8, "Dark2"), scale = c(1.5,0.5))
+```

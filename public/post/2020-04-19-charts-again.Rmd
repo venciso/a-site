@@ -35,7 +35,7 @@ p<-ggplot(cov[cumDeaths>500 & country!="China"],aes(x=dateRep,y=log(deaths), col
 ```
 
 ```{r,echo=FALSE}
-ggplotly(p,width = 600,height= 1000)
+ggplotly(p,width = 900,height= 600)
 ```
 
 
@@ -53,12 +53,12 @@ cov[cumDeaths>500 & country!="China"] %>% hchart(.,
 
 
 ```{r,include=FALSE, echo=FALSE}
-fp<-cov[cumDeaths>=100]
+fp<-cov[cumDeaths>=1000]
 fp[,index:=seq(1,.N),country]
 ```
 
 ```{r, echo=FALSE, warning=FALSE}
-p<-ggplot(fp,aes(x=index, y=log(cumDeaths), group=country, colour=country)) + geom_line() + geom_point() + theme_bw()
+p<-ggplot(fp,aes(x=index, y=log(cumDeaths), group=country, colour=country)) + geom_line()  + theme_bw() #+ geom_point()
 ```
 
 ```{r, echo=FALSE}
