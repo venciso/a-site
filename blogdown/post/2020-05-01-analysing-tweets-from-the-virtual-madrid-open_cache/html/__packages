@@ -1,0 +1,13 @@
+base
+data.table
+ggplot2
+dplyr
+reticulate
+sentimentr
+rtweet
+leaflet
+lubridate
+tidytext
+RColorBrewer
+wordcloud
+kableExtra
