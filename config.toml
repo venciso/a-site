@@ -3,7 +3,7 @@ languageCode = "en-us"
 title = "Placeholder for an awesome title"
 theme = "minimal"
 disqusShortname = "username" # delete this to disable disqus comments
-googleAnalytics = ""
+googleAnalytics = "UA-324335-2"
 
 [params]
     author = "Victor Enciso"
