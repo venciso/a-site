@@ -201,8 +201,9 @@ exampleText</code></pre>
 <p>Unfortunately, the translate funtion in <code>TextBlob</code> actually has a limit to how much it can translate and that limit was nowhere close enough to translate all the tweet I have.</p>
 <p>In any case, this is how you would go about it:</p>
 <p>Import the python module and use it to make a text blob:</p>
-<pre class="r"><code>require(reticulate)
-tb&lt;-import(&quot;textblob&quot;) #Import TextBlob
+<pre class="r"><code>require(reticulate)</code></pre>
+<pre><code>## Warning: package &#39;reticulate&#39; was built under R version 3.5.3</code></pre>
+<pre class="r"><code>tb&lt;-import(&quot;textblob&quot;) #Import TextBlob
 spanishTweet&lt;-tb$TextBlob(tw[lang==&quot;es&quot;,][1,text]) #create a blob
 spanishTweet</code></pre>
 <pre><code>## Hoy debería de dar comienzo el @MutuaMadridOpen. Volveremos a disfrutar como siempre, como nunca. https://t.co/GOT7Yp4Eg8</code></pre>
@@ -275,25 +276,25 @@ sent_dir
 Negative
 </td>
 <td style="text-align:right;">
-18
+23
 </td>
 <td style="text-align:right;">
 28
 </td>
 <td style="text-align:right;">
-13
+15
+</td>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:right;">
+33
 </td>
 <td style="text-align:right;">
 24
 </td>
 <td style="text-align:right;">
-32
-</td>
-<td style="text-align:right;">
-24
-</td>
-<td style="text-align:right;">
-20
+23
 </td>
 <td style="text-align:right;">
 24
@@ -304,25 +305,25 @@ Negative
 Positive
 </td>
 <td style="text-align:right;">
-82
+77
 </td>
 <td style="text-align:right;">
 72
 </td>
 <td style="text-align:right;">
-87
+85
+</td>
+<td style="text-align:right;">
+77
+</td>
+<td style="text-align:right;">
+67
 </td>
 <td style="text-align:right;">
 76
 </td>
 <td style="text-align:right;">
-68
-</td>
-<td style="text-align:right;">
-76
-</td>
-<td style="text-align:right;">
-80
+77
 </td>
 <td style="text-align:right;">
 76

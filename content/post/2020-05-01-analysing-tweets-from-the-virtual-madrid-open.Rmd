@@ -46,7 +46,7 @@ The tweets come with latitude and longitude coordinates for users who allowed th
 
 Using leaflet we can plot the location of the tweets to get an idea of where they are coming from. Unfortunately only a very small proportion of tweets come with location information but we will map those anyway. There are other variables in the dataset that provide information about where the tweet comes from such as city, place but it's not standardised in any way. These data could be used to derive coordinates if you were stubborn enough.
 
-```{r, cache=TRUE}
+```{r, cache=FALSE}
 m <- leaflet() %>%
      addTiles() %>%  # Add default OpenStreetMap map tiles
     #addProviderTiles('Stamen.Toner') %>% 
@@ -60,7 +60,7 @@ Even with the small proportion of tweets we can get an idea of where the audienc
 ### Global audience
 Tennis is known to be a very interantional sport with fans all around the world. Separately from mapping the tweet locations we can examine which languages are most represented in the tweet set.
 
-```{r, cache=TRUE}
+```{r, cache=FALSE}
 ggplot(tw[,.N,lang][N>50], aes(x=lang,y=N)) + geom_bar(stat="Identity") + theme_bw()
 ```
 
@@ -72,14 +72,14 @@ So, how do people feel about this first attempt at an online tournament? We can 
 
 Here's an example of how the package works. We take an example tweet...
 
-```{r, cache=TRUE}
+```{r, cache=FALSE}
 exampleText<-tw[lang=="en",text][129]
 exampleText
 ```
 
 ...and then apply the `sentiment_by` function to the tweet. 
 
-```{r, cache=TRUE}
+```{r, cache=FALSE}
 sentiment_by(exampleText)
 ```
 
@@ -98,7 +98,7 @@ Unfortunately, the translate funtion in `TextBlob` actually has a limit to how m
 In any case, this is how you would go about it:
 
 Import the python module and use it to make a text blob:
-```{r, cache=TRUE, message=FALSE}
+```{r, cache=FALSE, message=FALSE}
 require(reticulate)
 tb<-import("textblob") #Import TextBlob
 spanishTweet<-tb$TextBlob(tw[lang=="es",][1,text]) #create a blob
@@ -106,7 +106,7 @@ spanishTweet
 ```
 
 Do the actual translation:
-```{r,cache=TRUE}
+```{r,cache=FALSE}
 trans.spanishTweet<-spanishTweet$translate(from_lang = "es", to="en")
 trans.spanishTweet
 ```
@@ -123,7 +123,7 @@ Finally, in my first pass at this I found I was getting some non-tennis related 
 
 We can now calculate sentiment for all the remaining tweets. 
 
-```{r, cache=TRUE}
+```{r, cache=FALSE}
 twen <- tw[lang=="en"]
 offical<-c("MutuaMadridOpen","the_LTA","TennisChannel","WTA","atptour","Tennis","Eurosport_UK")
 twen<-twen[!screen_name %in% offical]
@@ -141,7 +141,7 @@ There is a big peak at 0 which represents neutral tweets. The distributions to e
 
 Let's remove the neutral-sentiment tweets and plot the histogram again this time looking at the evolution per day.
 
-```{r, cache=TRUE}
+```{r, cache=FALSE}
 twen<-bind_cols(twen,sent)
 twen[,sent_dir:=ifelse(ave_sentiment<0,"Negative",ifelse(ave_sentiment>0,"Positive","Neutral"))]
 ggplot(twen[abs(ave_sentiment)>0 & date(created_at)<"2020-05-01"],aes(ave_sentiment, fill=sent_dir)) + geom_histogram(bins = 50) + facet_wrap(.~date(created_at)) + theme_bw()
@@ -153,7 +153,7 @@ In terms of sentiment we can see that positive outweights negative every day but
 
 We can tabulate the proportion of postive and negative tweets.
 
-```{r, cache=TRUE}
+```{r, cache=FALSE}
 percs<-twen[abs(ave_sentiment)>0 & date(created_at)<"2020-05-01",.N,.(date(created_at),sent_dir)][sent_dir!="Neutral"][,.(sent_dir,p=round(100*N/sum(N))),date]
 kable(dcast(percs,sent_dir~date,value.var="p"),format = 'html') %>% kable_styling(bootstrap_options = 'striped')
 ```
@@ -164,7 +164,7 @@ The proportion of positive sentiment is in the high 70s and 80s for most days. T
 
 The `extract_sentiment_terms` function tells us which terms in the tweets contributed to the sentiment score.  
 
-```{r,message=F,warning=F, cache=TRUE}
+```{r,message=F,warning=F, cache=FALSE}
 terms<-extract_sentiment_terms((twen[,text]))
 ```
 
@@ -173,7 +173,7 @@ We can visualise these terms using the `wordcloud` package. I will make one clou
 Before constructing the clouds I'm removing stop words, common terms like 'at','the','in', that do not contribute to sentiment. Apart from the terms in the stop_words array provided by the `tidytext` pacakge I'm also removing some custom terms that will be very common in our tweet set but which won't tell us much about sentiment.
 
 The postive-term cloud: 
-```{r, warning=FALSE,message=FALSE, cache=TRUE}
+```{r, warning=FALSE,message=FALSE, cache=FALSE}
 my_sw<-c(stop_words$word,"virtual","pro","play","game","tennis","players","madrid","match","video","games","player","players","tournament")
 
 u<-data.table(words=unlist(terms[,positive]))[,.N,words][order(-N)]
@@ -185,7 +185,7 @@ wc_pos<-wordcloud(words = u$words, freq = u$N, min.freq = 1,max.words=200, rando
 Positive terms are what you would expect with things like  "win", "fun", "luck" and "congrats" having the biggest size. 
 
 The negative-term cloud:
-```{r, warning=FALSE,message=FALSE, cache=TRUE}
+```{r, warning=FALSE,message=FALSE, cache=FALSE}
 u<-data.table(words=unlist(terms[,negative]))[,.N,words][order(-N)]
 u<-u[!words %in% my_sw]
 wc_neg<-wordcloud(words = u$words, freq = u$N, min.freq = 1,max.words=200, random.order=FALSE, rot.per=0.35,colors=brewer.pal(8, "Dark2"))
@@ -210,7 +210,7 @@ twen[,text2 := gsub("[[:punct:]]", "", text2)]
 
 We now make the wordclouds.
 
-```{r,message=FALSE, cache=TRUE}
+```{r,message=FALSE, cache=FALSE}
 u<-unnest_tokens(twen[!grep("atHome",text)][ave_sentiment>0,.(text2)],words,text2)[,.N,words][order(-N)]
 u<-u[!words %in% my_sw]
 wordcloud(words = u$words, freq = u$N, min.freq = 5,max.words=200, random.order=FALSE, rot.per=0.35,colors=brewer.pal(8, "Dark2"),scale = c(1.5,0.5))
@@ -218,7 +218,7 @@ wordcloud(words = u$words, freq = u$N, min.freq = 5,max.words=200, random.order=
 
 This time there's a lot more terms in the wordcloud because the tweets are richer than the extracted term data. Many of the extra terms are realted to player names. Otherwise we see similar type of words as in the extracted term cloud. 
 
-```{r,message=FALSE, cache=TRUE}
+```{r,message=FALSE, cache=FALSE}
 u<-unnest_tokens(twen[!grep("atHome",text)][ave_sentiment<0,.(text2)],words,text2)[,.N,words][order(-N)]
 u<-u[!words %in% my_sw]
 wordcloud(words = u$words, freq = u$N, min.freq = 3,max.words=200, random.order=FALSE, rot.per=0.35,colors=brewer.pal(8, "Dark2"), scale = c(1.5,0.5))
