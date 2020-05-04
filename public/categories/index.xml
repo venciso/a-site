@@ -1,33 +1,23 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on Placeholder for an awesome title</title>
+    <title>
+	Categories on Placeholder for an awesome title
+	
+	</title>
     <link>/categories/</link>
-    <description>Recent content in Categories on Placeholder for an awesome title</description>
+    <description>Recent content 
+	
+	in Categories on Placeholder for an awesome title
+	</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 01 May 2020 00:00:00 +0000</lastBuildDate>
+	
+	
+    <lastBuildDate>Mon, 04 May 2020 00:00:00 +0000</lastBuildDate>
+	
     
-	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>R</title>
-      <link>/categories/r/</link>
-      <pubDate>Fri, 01 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/r/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tennis</title>
-      <link>/categories/tennis/</link>
-      <pubDate>Fri, 01 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/tennis/</guid>
-      <description></description>
-    </item>
     
   </channel>
 </rss>
