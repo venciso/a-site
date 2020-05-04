@@ -233,3 +233,4 @@ We went on a whirlwind tour of several packages that can be used to analyse twee
 
 In terms of the tournament, there were some teething issues like the choice of streaming platform, players with bad internet connections and too much commentary rather than having players mic'ed up. However, the overall sentiment was positive and people seemed to welcome this type of innovation from the organisers. We'll see how future online tournaments fare. 
 
+This site is being aggregated with permission by [r-bloggers](https://www.r-bloggers.com/)
